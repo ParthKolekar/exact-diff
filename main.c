@@ -1,8 +1,19 @@
 #include<stdio.h>
+#include<sys/stat.h>
 
 int main(const int argc, const char ** argv) {
     if (argc != 3) 
         return -1;
+    struct stat statstruct;
+    if (stat(argv[1], &statstruct) == -1) 
+        return -1;
+    off_t size1 = statstruct.st_size;
+    if (stat(argv[2], &statstruct) == -1)
+        return -1;
+    off_t size2 = statstruct.st_size;
+    if (size1 != size2) {
+        return -1;
+    }
     FILE *f1 = fopen(argv[1], "r");
     if (!f1) 
         return -1;
